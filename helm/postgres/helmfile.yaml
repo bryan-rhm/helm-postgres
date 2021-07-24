@@ -4,7 +4,7 @@ environments:
 
 helmDefaults:
   createNamespace: true
-  wait: true
+  wait: false
 
 releases:
 - name: postgres
