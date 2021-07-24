@@ -3,12 +3,12 @@ environments:
   staging:
 
 helmDefaults:
-  createNamespace: false
+  createNamespace: true
   wait: true
 
 releases:
 - name: postgres
-  namespace: default
+  namespace: postgres
   chart: .
   values:
     - values.yaml
