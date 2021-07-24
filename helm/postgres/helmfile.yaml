@@ -1,0 +1,16 @@
+# Define deployment environments
+environments:
+  staging:
+
+helmDefaults:
+  createNamespace: false
+  wait: true
+
+releases:
+- name: postgres
+  namespace: default
+  chart: .
+  values:
+    - values.yaml
+    - ./vars/{{ .Environment.Name }}/values.yaml
+

@@ -1,0 +1,48 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+containerPort: 5432
+
+replicaCount: 1
+
+serviceName: postgres
+
+selectors:
+  app: postgres
+
+image:
+  repository: postgres
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+env: {}
+
+configMap:
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: password # Don't use this for production envs, use encrypted secrets instead
+  PGDATA: /data/pgdata
+
+service:
+  type: LoadBalancer
+  port: 5432
+
+resources:
+  limits:
+    cpu: 1
+    memory: 1024Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+storageSize: 10Gi
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

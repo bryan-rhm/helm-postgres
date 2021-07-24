@@ -1,0 +1,9 @@
+# PostgreSQL StatefulSet ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.serviceName }}
+  labels:
+    {{ .Values.selectors | nindent 4 }}
+data:
+{{- toYaml .Values.configMap | nindent 2 }}
