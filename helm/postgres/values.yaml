@@ -3,12 +3,9 @@
 
 containerPort: 5432
 
-replicaCount: 1
+replicaCount: 2
 
 serviceName: postgres
-
-selectors:
-  app: postgres
 
 image:
   repository: postgres

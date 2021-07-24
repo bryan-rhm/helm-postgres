@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: {{ .Values.serviceName }}
   labels:
-    {{- include "postgres.labels" . | nindent 4 }}
+    app: {{ .Values.serviceName }}
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: postgresql
       protocol: TCP
-      name: http
+      name: postgresql
   selector:
-    {{ .values.selectors | nindent 4 }}
+    app: {{ .Values.serviceName }}

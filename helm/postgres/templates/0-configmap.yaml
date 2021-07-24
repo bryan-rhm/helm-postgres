@@ -4,6 +4,6 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.serviceName }}
   labels:
-    {{ .Values.selectors | nindent 4 }}
+    app: {{ .Values.serviceName }}
 data:
 {{- toYaml .Values.configMap | nindent 2 }}

@@ -3,20 +3,17 @@ kind: StatefulSet
 metadata:
   name: {{ .Values.serviceName }}
   labels:
-    {{- include "postgres.labels" . | nindent 4 }}
+    app: {{ .Values.serviceName }}
 spec:
+  serviceName: {{ .Values.serviceName }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{ .Values.selectors | nindent 6 }}
+      app: {{ .Values.serviceName }}
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
       labels:
-        {{ .Values.selectors | nindent 8 }}
+        app: {{ .Values.serviceName }}
     spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
@@ -26,6 +23,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: {{ .Values.serviceName }}
+              mountPath: /data
           envFrom:
           - configMapRef:
               name: {{ .Values.serviceName }}
@@ -37,7 +37,7 @@ spec:
             {{- end }}
           {{- end }}                                   
           ports:
-            - name: http
+            - name: postgresql
               containerPort: {{.Values.containerPort}}
               protocol: TCP
           resources:
@@ -54,12 +54,11 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-
-    volumeClaimTemplates:
+  volumeClaimTemplates:
       - metadata:
           name: {{ .Values.serviceName }}
         spec:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: .Values.storageSize
+              storage: {{ .Values.storageSize }}
